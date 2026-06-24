@@ -18,7 +18,7 @@ import { zeroGTestnet } from "./chain";
 /**
  * ABI for IPromptRegistry (0x1337...)
  */
-const promptRegistryAbi = parseAbi([
+export const promptRegistryAbi = parseAbi([
   // --- writes ---
   "function transferCustody(uint256 promptId, address newCustodian) external",
   "function setGovernance(address governance) external",
@@ -39,7 +39,7 @@ const promptRegistryAbi = parseAbi([
 /**
  * ABI for IPromptLicense (0x75CD...)
  */
-const promptLicenseAbi = parseAbi([
+export const promptLicenseAbi = parseAbi([
   // --- writes ---
   "function purchaseCallLicense(uint256 promptId, uint256 calls) external payable",
   "function purchaseFixedLicense(uint256 promptId, uint256 durationDays) external payable",
@@ -56,7 +56,7 @@ const promptLicenseAbi = parseAbi([
 /**
  * ABI for IPromptGovernance (0xcd4f...)
  */
-const promptGovernanceAbi = parseAbi([
+export const promptGovernanceAbi = parseAbi([
   // --- writes ---
   "function proposeTransfer(uint256 promptId, address newCustodian) external returns (uint256 proposalId)",
   "function voteTransfer(uint256 proposalId, bool support) external",
