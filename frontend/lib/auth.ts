@@ -5,9 +5,9 @@ import { SiweMessage } from "siwe";
 /**
  * NextAuth v5 configuration with SIWE (Sign-In with Ethereum).
  *
- * The actual API route handler (/api/auth/[...nextauth]) will be added
- * in Phase 2. This config provides the shared auth instance used by
- * client components and server actions.
+ * The credentials provider verifies an EIP-4361 signed message (SIWE).
+ * On success, the wallet address is stored in both the JWT and session
+ * so downstream API routes can identify the authenticated user.
  */
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -26,7 +26,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             signature: credentials.signature as string,
           });
           if (result.success) {
-            return { id: siwe.address, address: siwe.address };
+            return {
+              id: siwe.address,
+              name: siwe.address,
+              address: siwe.address,
+            };
           }
           return null;
         } catch {
@@ -36,8 +40,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    /**
+     * Persist the wallet address from the authorize step into the JWT
+     * so it survives across session refreshes.
+     */
+    jwt({ token, user }) {
+      if (user?.address) {
+        token.address = user.address;
+      }
+      return token;
+    },
+    /**
+     * Expose the wallet address and user id in every server / client
+     * session object.
+     */
     session({ session, token }) {
       if (token.sub) session.user.id = token.sub;
+      if (token.address) session.user.address = token.address as string;
       return session;
     },
   },
