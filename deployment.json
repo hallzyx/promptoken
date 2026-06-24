@@ -1,0 +1,11 @@
+{
+  "network": "0g-testnet",
+  "chainId": "16602",
+  "deployer": "0x6F21C2155bF93b49348a422A604310F8CCd6ec74",
+  "contracts": {
+    "PromptRegistry": "0x1337CcF29d030005A3388839C76d9E30C73C708B",
+    "PromptLicense": "0x75CDdB80a27DA07dBE654B58d008B78872e7a7a9",
+    "PromptGovernance": "0xcd4f00b65729B69D757aa6fa513cdD8A6617699b"
+  },
+  "timestamp": "2026-06-24T17:45:30.336Z"
+}
