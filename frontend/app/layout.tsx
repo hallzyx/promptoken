@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { NavBar } from "@/components/nav-bar";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Promptoken",
+  title: "Promptoken — AI Prompt Marketplace on 0G",
   description:
-    "AI prompt marketplace — register, license, and govern prompts on 0G Chain.",
+    "Register, license, and govern AI prompts on the 0G Network. A marketplace for prompt IP with on-chain monetisation.",
 };
 
 export default function RootLayout({
@@ -27,10 +28,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+      <body className="min-h-full flex flex-col bg-background">
+        <Providers>
+          <NavBar />
+          <main className="flex-1">{children}</main>
+        </Providers>
       </body>
     </html>
   );
