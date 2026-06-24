@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { WalletConnect } from "./wallet-connect";
+import { SiweAuth } from "./siwe-auth";
 
 /**
  * Top navigation bar with glass effect and StellarFlow styling.
- * Shows branding, navigation links, and wallet connect button.
+ * Shows branding, navigation links, wallet connect, and SIWE auth status.
  * Uses mounted pattern to prevent hydration mismatch from wagmi's useAccount.
  */
 export function NavBar() {
@@ -29,7 +30,7 @@ export function NavBar() {
           Promptoken
         </Link>
 
-        {/* Right section */}
+        {/* Center nav */}
         <nav className="flex items-center gap-6">
           <Link
             href="/"
@@ -51,8 +52,13 @@ export function NavBar() {
               Dashboard
             </Link>
           )}
-          {mounted && <WalletConnect />}
         </nav>
+
+        {/* Right section: wallet + auth status */}
+        <div className="flex items-center gap-4">
+          {mounted && <SiweAuth />}
+          {mounted && <WalletConnect />}
+        </div>
       </div>
     </header>
   );

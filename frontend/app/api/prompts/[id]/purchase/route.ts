@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { auth } from "@/lib/auth";
+import { getServerSession } from "@/lib/auth-utils";
 import { promptRegistryContract } from "@/lib/contracts";
 
 /**
@@ -24,8 +24,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const session = await auth();
-    if (!session?.user?.address) {
+    const session = await getServerSession();
+    if (!session?.user?.id) {
       return Response.json(
         { success: false, error: "Authentication required" },
         { status: 401 },

@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { auth } from "@/lib/auth";
+import { getServerSession } from "@/lib/auth-utils";
 import {
   publicClient,
   promptRegistryContract,
@@ -32,8 +32,8 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const session = await auth();
-    if (!session?.user?.address) {
+    const session = await getServerSession();
+    if (!session?.user?.id) {
       return Response.json(
         { success: false, error: "Authentication required" },
         { status: 401 },
@@ -42,7 +42,7 @@ export async function POST(
 
     const { id } = await params;
     const promptId = BigInt(id);
-    const consumerAddress = session.user.address as `0x${string}`;
+    const consumerAddress = session.user.id as `0x${string}`;
     const { userMessage } = await request.json();
 
     if (!userMessage || typeof userMessage !== "string") {

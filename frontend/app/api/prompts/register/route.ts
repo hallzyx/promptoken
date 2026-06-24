@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { getServerSession } from "@/lib/auth-utils";
 import {
   publicClient,
   promptRegistryContract,
@@ -33,8 +33,8 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {
-    const session = await auth();
-    if (!session?.user?.address) {
+    const session = await getServerSession();
+    if (!session?.user?.id) {
       return Response.json(
         { success: false, error: "Authentication required" },
         { status: 401 },

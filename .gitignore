@@ -4,3 +4,7 @@ artifacts/
 cache/
 typechain-types/
 .design/
+.playwright-mcp/
+*.png
+skills-lock.json
+.atl/
