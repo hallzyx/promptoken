@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAccount } from "wagmi";
 import { WalletConnect } from "./wallet-connect";
@@ -7,9 +8,15 @@ import { WalletConnect } from "./wallet-connect";
 /**
  * Top navigation bar with glass effect and StellarFlow styling.
  * Shows branding, navigation links, and wallet connect button.
+ * Uses mounted pattern to prevent hydration mismatch from wagmi's useAccount.
  */
 export function NavBar() {
   const { isConnected } = useAccount();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-outline-variant bg-background/80 backdrop-blur-md">
@@ -36,7 +43,7 @@ export function NavBar() {
           >
             Register
           </Link>
-          {isConnected && (
+          {mounted && isConnected && (
             <Link
               href="/dashboard"
               className="font-mono text-xs tracking-widest uppercase text-on-surface-variant transition-colors hover:text-white"
@@ -44,7 +51,7 @@ export function NavBar() {
               Dashboard
             </Link>
           )}
-          <WalletConnect />
+          {mounted && <WalletConnect />}
         </nav>
       </div>
     </header>
