@@ -42,7 +42,8 @@ export async function POST(
 
     const { id } = await params;
     const promptId = BigInt(id);
-    const consumerAddress = session.user.id as `0x${string}`;
+    // Better Auth SIWE stores wallet as {address}@{domain} in email
+    const consumerAddress = (session.user.email?.split("@")[0] ?? "") as `0x${string}`;
     const { userMessage } = await request.json();
 
     if (!userMessage || typeof userMessage !== "string") {

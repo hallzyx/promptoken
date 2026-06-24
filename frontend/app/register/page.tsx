@@ -90,25 +90,16 @@ export default function RegisterPage() {
       const key = await generateKey(sig);
       const { iv, ciphertext } = await encryptPrompt(promptText, key);
 
-      // 2. Upload to 0G Storage via server API
-      //    The server receives encrypted data + metadata
+      // 2. Upload to 0G Storage + register on-chain via server API
       const storageRes = await fetch("/api/prompts/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           encryptedData: ciphertext,
           iv,
-          // For MVP we embed the encrypted payload as the metadataURI
-          // In production, upload to 0G storage first then use the hash
-          storageHash: "0x" + ciphertext.slice(2, 10) + "...placeholder",
           promptHash: keccak256(toBytes(promptText)),
-          metadataURI: JSON.stringify({
-            name: promptName || `Prompt #${Date.now()}`,
-            description: promptDescription,
-            iv,
-            ciphertext,
-            author: address,
-          }),
+          promptName,
+          description: promptDescription,
           tiers: tiers.map((t) => ({
             price: BigInt(t.price).toString(),
             enabled: t.enabled,
